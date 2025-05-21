@@ -47,18 +47,6 @@ def replace_strings(abs_path_folder, str_to_replace, str_replacement):
     print("\nAll files in Directory changed as requested!")
 
 # Ausführung
-## Für Bachelor Arbeit
-'''
-abs_path_folder = "/Users/benkostka/Library/Mobile Documents/iCloud~md~obsidian/Documents/Academia_and_Work/7 - Work/Bachelorarbeit"
-str_to_replace = "{{date:DD.MM.YYYY}} {{time}}"
-str_replacement = get_formatted_datetime()
+abs_path_folder = "/Users/benkostka/Library/Mobile Documents/iCloud~md~obsidian/Documents/Academia_and_Work/Experiment - Messung der Lichtgeschwindigkeit nach der Drehspiegelmethode von Fizeau-Foucault.md"
 
-replace_strings(abs_path_folder, str_to_replace, str_replacement)
-'''
-## Für Verteiligung der Bachelorarbeit
-abs_path_folder = "/Users/benkostka/Library/Mobile Documents/iCloud~md~obsidian/Documents/Academia_and_Work/1 - Rough Notes/Verteidigung der Bachelorarbeit"
-
-str_to_replace = "{{date:DD.MM.YYYY}} {{time}}"
-str_replacement = get_formatted_datetime()
-
-replace_strings(abs_path_folder, str_to_replace, str_replacement)
+replace_latex_delimiter(abs_path_folder)
