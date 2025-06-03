@@ -104,12 +104,3 @@ def create_source_list_and_save_in_file(vault_name: str, folder_path_from_root_o
                 res_file.write(file_reference_section_content)
 
                 file.close()
-
-
-# Execute
-if __name__ == "__main__":
-    create_source_list_and_save_in_file("Academia_and_Work",
-                                        "7 - Work/Paper - Prototypische Entwicklung und Evaluierung einer Schrifterkennungs-Pipeline für die Digitalisierung von Schach - Partieformularen/4. Umsetzung",
-                                        "/Users/benkostka/Library/Mobile Documents/iCloud~md~obsidian/Documents/Academia_and_Work/source_list.md",
-                                        file_system="iCloud",
-                                        tagNames=["Paper - AKWI - Cybersicherheit und Künstliche Intelligenz Innovationen für eine sichere digitale Zukunft"])

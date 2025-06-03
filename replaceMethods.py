@@ -45,8 +45,3 @@ def replace_strings(abs_path_folder, str_to_replace, str_replacement):
         file.write(str_file)
 
     print("\nAll files in Directory changed as requested!")
-
-# Ausführung
-abs_path_folder = "/Users/benkostka/Library/Mobile Documents/iCloud~md~obsidian/Documents/Academia_and_Work/Experiment - Messung der Lichtgeschwindigkeit nach der Drehspiegelmethode von Fizeau-Foucault.md"
-
-replace_latex_delimiter(abs_path_folder)
