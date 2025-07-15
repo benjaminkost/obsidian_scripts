@@ -3,4 +3,4 @@
 
 # own executions
 main.py
-test_findAllReferences.py
+tests/test_findAllReferences.py
