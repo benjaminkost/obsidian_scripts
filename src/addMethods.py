@@ -1,6 +1,6 @@
 import os
+import shutil
 from datetime import datetime
-
 
 def get_formatted_datetime():
     now = datetime.now()
@@ -35,7 +35,33 @@ def add_template_to_multable_notes(abs_path_folder, template_str_before, templat
 
     print("\nAll files in Directory changed as requested!")
 
+def move_all_files(src_dir: str, dest_dir: str):
+    # Zielordner erstellen, falls nicht vorhanden
+    os.makedirs(dest_dir, exist_ok=True)
+
+    # Alle Dateien und Unterordner durchsuchen
+    for root, _, files in os.walk(src_dir):
+        for file in files:
+            src_file = os.path.join(root, file)
+            dest_file = os.path.join(dest_dir, file)
+
+            # Falls eine Datei mit gleichem Namen schon existiert → umbenennen
+            if os.path.exists(dest_file):
+                base, ext = os.path.splitext(file)
+                counter = 1
+                while os.path.exists(dest_file):
+                    dest_file = os.path.join(dest_dir, f"{base}_{counter}{ext}")
+                    counter += 1
+
+            shutil.move(src_file, dest_file)
+            print(f"Verschoben: {src_file} → {dest_file}")
+
 def add_dir_names_as_mytags_to_metadata(abs_path_folder):
+    """
+
+    :param abs_path_folder: Path to directory to add metadata
+    :return:
+    """
     # Number of directories above the abs_path_folder
     number_of_sub_dir = len(abs_path_folder.split("/")) ##actually there is one element more but does not matter for the code
 
