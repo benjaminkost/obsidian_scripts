@@ -52,7 +52,7 @@ def export_obsidian_media(file_string: str, vault_path: str, export_path: str):
     os.makedirs(export_path, exist_ok=True)
 
     # Unterstützte Medien-Typen
-    exts = r"(?:png|jpg|jpeg|gif|pdf|svg|webp)"
+    exts = r"(?:png|jpg|jpeg|gif|pdf|svg|webp|mp4)"
 
     pattern = re.compile(
         rf"!?\[\[([^\]|]+\.{exts})(?:\|[^\]]+)?\]\]|!\[.*?\]\(([^)]+\.{exts})\)",
