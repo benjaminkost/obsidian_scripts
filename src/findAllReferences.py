@@ -3,13 +3,13 @@ import os
 import re
 from datetime import datetime
 
-def check_str_in_mytags(str_file, tag) -> bool:
+def check_str_in_mytags(str_file, mytag) -> bool:
     pattern = re.compile(rf"mytags:\s*([\s\S]*)\stags:")
 
     matches = pattern.findall(str_file)
 
     for match in matches:
-        if tag in match:
+        if mytag in match:
             return True
 
     return False

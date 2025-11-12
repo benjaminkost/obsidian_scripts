@@ -56,6 +56,23 @@ def move_all_files(src_dir: str, dest_dir: str):
             shutil.move(src_file, dest_file)
             print(f"Verschoben: {src_file} → {dest_file}")
 
+def add_string_to_tags(file_str: str, tag: str) -> str:
+    """
+    Add a string as a tag to a note (as a string)
+
+    :param file_str: complete text of a note
+    :param tag: str that should be added to note
+    :return: string of file with tag in tags section
+    """
+
+    identifier_of_tags_section = "\ntags:"
+    index_of_tags_section = file_str.find(identifier_of_tags_section)
+
+    str_file = file_str[:(index_of_tags_section + len(identifier_of_tags_section))] + f"\n  - {tag}" + file_str[(index_of_tags_section + len(identifier_of_tags_section)):]
+
+    return str_file
+
+
 def add_dir_names_as_mytags_to_metadata(abs_path_folder):
     """
 

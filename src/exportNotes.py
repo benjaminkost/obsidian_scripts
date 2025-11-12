@@ -6,10 +6,10 @@ import shutil
 
 from src.findAllReferences import check_str_in_mytags
 
-def export_notes_with_mytag(path_to_vault, export_path, mytag:str):
+def export_notes_with_mytag(abs_path_to_vault, export_path, mytag:str):
     proceed = True
 
-    count_of_file = sum([len(files) for r, d, files in os.walk(path_to_vault)])
+    count_of_file = sum([len(files) for r, d, files in os.walk(abs_path_to_vault)])
     logging.info(f"Count of files in vault: {count_of_file}")
 
     # Make export directory and asset as subfolder
@@ -17,7 +17,7 @@ def export_notes_with_mytag(path_to_vault, export_path, mytag:str):
     Path(f"{export_path}/assets").mkdir(parents=True, exist_ok=True)
 
     # Search every file with .md extension
-    for dirpath, dirname, filenames in os.walk(path_to_vault):
+    for dirpath, dirname, filenames in os.walk(abs_path_to_vault):
         only_md_filenames = [f for f in filenames if f.endswith(".md")]
         for filename in only_md_filenames:
             path_to_file = f"{dirpath}/{filename}"
@@ -29,9 +29,9 @@ def export_notes_with_mytag(path_to_vault, export_path, mytag:str):
                 shutil.copyfile(path_to_file, f"{export_path}/{filename}")
 
                 # Copy assets
-                export_obsidian_media(file_str, path_to_vault, f"{export_path}/assets")
+                export_obsidian_media(file_str, abs_path_to_vault, f"{export_path}/assets")
 
-                count_of_file = sum([len(files) for r, d, files in os.walk(path_to_vault)])
+                count_of_file = sum([len(files) for r, d, files in os.walk(abs_path_to_vault)])
 
                 # if proceed:
                 #    var = input(f"Count of files in vault: {count_of_file}\n\nIs that okay (y/n): ")
@@ -43,7 +43,7 @@ def export_notes_with_mytag(path_to_vault, export_path, mytag:str):
                 #    proceed = True
 
 
-def export_obsidian_media(file_string: str, vault_path: str, export_path: str):
+def export_obsidian_media(file_string: str, abs_vault_path: str, export_path: str):
     """
     Findet alle referenzierten Medien-Dateien in einem Obsidian-Markdown-Text
     und kopiert sie aus dem Vault in einen Export-Ordner.
@@ -78,12 +78,12 @@ def export_obsidian_media(file_string: str, vault_path: str, export_path: str):
         found_path = None
 
         # Prüfe direkte Existenz
-        direct_path = os.path.join(vault_path, ref)
+        direct_path = os.path.join(abs_vault_path, ref)
         if os.path.exists(direct_path):
             found_path = direct_path
         else:
             # Durchsuche Vault rekursiv
-            for root, _, files in os.walk(vault_path):
+            for root, _, files in os.walk(abs_vault_path):
                 if ref_name in files:
                     found_path = os.path.join(root, ref_name)
                     break
