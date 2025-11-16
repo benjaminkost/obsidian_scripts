@@ -68,7 +68,14 @@ def add_string_to_tags(file_str: str, tag: str) -> str:
     identifier_of_tags_section = "\ntags:"
     index_of_tags_section = file_str.find(identifier_of_tags_section)
 
-    str_file = file_str[:(index_of_tags_section + len(identifier_of_tags_section))] + f"\n  - {tag}" + file_str[(index_of_tags_section + len(identifier_of_tags_section)):]
+    if index_of_tags_section == -1:
+        # Create tag section in the beginning of metadata section
+        identifier_of_metadata_section_begin = "---"
+        index_of_metadata_section_begin = file_str.find(identifier_of_metadata_section_begin)
+        tags_metadata_paragraph = "tags:"
+        str_file = file_str[:(index_of_metadata_section_begin + len(identifier_of_metadata_section_begin))] + f"\n{tags_metadata_paragraph}\n  - {tag}" + file_str[(index_of_metadata_section_begin + len(index_of_metadata_section_begin)):]
+    else:
+        str_file = file_str[:(index_of_tags_section + len(identifier_of_tags_section))] + f"\n  - {tag}" + file_str[(index_of_tags_section + len(identifier_of_tags_section)):]
 
     return str_file
 

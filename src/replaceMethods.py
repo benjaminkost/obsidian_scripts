@@ -47,7 +47,7 @@ def replace_strings(abs_path_folder, str_to_replace, str_replacement):
 
     print("\nAll files in Directory changed as requested!")
 
-def replace_mytag_with_tag(abs_vault_path: str, mytag: str) -> None:
+def replace_mytag_with_tag(abs_vault_path: str, mytag: str, tag_name=None) -> None:
     """
     Is changing every Note that contains the mytag given so that the mytag in the Obsidian custom metadata field "mytag"
     in to a normal tag in the Obsidian metadata field "tags"
@@ -55,6 +55,8 @@ def replace_mytag_with_tag(abs_vault_path: str, mytag: str) -> None:
     :param mytag: Is a custom Obsidian metadta field
     :param abs_vault_path: Absolute path to obsidian vault
     """
+    count_notes_changed = 0
+
     # Go through all folders of vault
     for dirpath, dirnames, filenames in os.walk(abs_vault_path):
         proceed = False
@@ -76,7 +78,10 @@ def replace_mytag_with_tag(abs_vault_path: str, mytag: str) -> None:
                 new_file_str = "".join(line + "\n" for line in list_file_str)
 
                 # Add string mytag to tags field
-                final_file_str = add_string_to_tags(file_str=new_file_str,tag=mytag)
+                if tag_name is None:
+                    final_file_str = add_string_to_tags(file_str=new_file_str,tag=mytag)
+                else:
+                    final_file_str = add_string_to_tags(file_str=new_file_str, tag=tag_name)
 
                 var = ""
                 if not proceed:
@@ -93,7 +98,11 @@ def replace_mytag_with_tag(abs_vault_path: str, mytag: str) -> None:
                         file.write(final_file_str)
                         print(f"This text is written in file: \n{final_file_str}")
 
+                        count_notes_changed+=1
+
                     proceed = True
+
+    print(f"Notes changed: {count_notes_changed}")
 
 def replace_list_of_mytags(abs_vault_path:str, list_of_mytags:list) -> None:
     for mytag in list_of_mytags:

@@ -9,7 +9,10 @@ def check_str_in_mytags(str_file, mytag) -> bool:
     matches = pattern.findall(str_file)
 
     for match in matches:
-        if mytag in match:
+        match = match.replace("[[", "").replace("]]", "").replace("\n", "").replace("\"", "").replace("-","").strip().split("   ")[0]
+        print(match)
+        if mytag == match:
+            print("Here")
             return True
 
     return False
