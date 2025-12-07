@@ -7,7 +7,6 @@ import shutil
 from src.findAllReferences import check_str_in_mytags
 
 def export_notes_with_mytag(abs_path_to_vault, export_path, mytag:str):
-    proceed = True
 
     count_of_file = sum([len(files) for r, d, files in os.walk(abs_path_to_vault)])
     logging.info(f"Count of files in vault: {count_of_file}")
