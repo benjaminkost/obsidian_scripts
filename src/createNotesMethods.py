@@ -50,7 +50,6 @@ def create_upper_part_of_template(generic_template_start:str, mytags_list:list[s
 
 def add_alias_to_list_of_mytags(mytags_list:list[str]) -> list[str]:
     prefix = r"(\d{12}) (.+)"
-    print(mytags_list)
     new_mytags_list = []
     for mytag in mytags_list:
         if "|" in mytag:
@@ -115,7 +114,7 @@ def create_notes_from_big_note(abs_path_to_vault: Path, relative_path_to_file: P
             timestamp = datetime.datetime.fromtimestamp(current_time).strftime("%Y%m%d%H%M")
             no_structure_numbers_titles = re.sub(r"(\d.?)+\s", "", title)
             safe_title = re.sub(r"[\\/:|]", "", no_structure_numbers_titles)
-            current_file_name = f"{timestamp} {safe_title}"
+            current_file_name = f"{timestamp} - {safe_title}"
             current_path[current_level] = current_file_name
 
             # Delete all level beneath current lowest level
