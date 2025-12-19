@@ -49,7 +49,7 @@ def create_upper_part_of_template(generic_template_start:str, mytags_list:list[s
     return final_template
 
 def add_alias_to_list_of_mytags(mytags_list:list[str]) -> list[str]:
-    prefix = r"(\d{12}) (.+)"
+    prefix = r"(\d{12})( - | )(.+)"
     new_mytags_list = []
     for mytag in mytags_list:
         if "|" in mytag:
@@ -58,7 +58,7 @@ def add_alias_to_list_of_mytags(mytags_list:list[str]) -> list[str]:
 
         match = re.match(prefix, mytag)
         if match:
-            _, title = match.groups()
+            _, _, title = match.groups()
             new_mytags_list.append(f"{mytag}|{title}")
         else:
             new_mytags_list.append(mytag)
