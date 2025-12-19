@@ -28,7 +28,7 @@ def replace_strings(abs_path_folder, str_to_replace, str_replacement):
         for filename in [f for f in filenames if f.endswith(".md")]:
             list_files_in_dir.append(os.path.join(dirpath, filename))
 
-        # Change all files in list
+    # Change all files in list
     for path_for_file in list_files_in_dir:
         file = open(path_for_file, "r")
         str_file = file.read()
