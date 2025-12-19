@@ -1,13 +1,16 @@
 import os
+import re
 import shutil
 from datetime import datetime
+from pathlib import Path
+
 
 def get_formatted_datetime():
     now = datetime.now()
     formatted = f"{now.strftime('%d.%m.%Y')} {now.strftime('%H:%M')}"
     return formatted
 
-def add_template_to_multable_notes(abs_path_folder, template_str_before, template_str_after):
+def add_template_to_multiple_notes(abs_path_folder, template_str_before, template_str_after):
     list_files_in_dir = []
 
     # Added all files in dir in list
@@ -124,3 +127,98 @@ def add_dir_names_as_mytags_to_metadata(abs_path_folder):
 
     print(f"{list_skipped_notes} Notes did not have \"mytags\" in the metadata !?")
     print("\nAll files in Directory changed as requested!")
+
+def get_mytags_section(file_str: str) -> str | None:
+    """Hilfsfunktion, um den Inhalt der mytags-Sektion zu extrahieren."""
+    # Regex sucht nach 'mytags:', gefolgt von Inhalt, bis zum nächsten Key (Zeilenanfang mit Wort:) oder Dateiende.
+    regex = r"^mytags:\s*\n(.*?)(?=^\w+:|\Z)"
+    match = re.search(regex, file_str, re.MULTILINE | re.DOTALL)
+
+    if match:
+        return match.group(1)
+    return None
+
+def mytags_exists(file_str:str, list_of_existing_mytags: list[str]) -> bool:
+    mytags_section = get_mytags_section(file_str)
+    if mytags_section is None:
+        return False
+
+    # add mytag to list_of_existing_mytags
+    for mytag in list_of_existing_mytags:
+        if f"[[{mytag}]]" not in mytags_section:
+            return False
+
+    return True
+
+def mytag_exists(file_str:str, mytag:str) -> bool:
+    mytags_section = get_mytags_section(file_str)
+    if mytags_section is None:
+        return False
+
+    # add mytag to list_of_existing_mytags
+    if f"[[{mytag}]]" not in mytags_section:
+        return False
+
+    return True
+
+def add_mytag_to_file_str(file_str:str, mytag:str) -> str:
+    """
+    Adds a mytag to the mytags section of a file string
+
+    :param file_str:
+    :param mytag:
+    :return: file string with added mytag
+    """
+    regex_for_mytags_section = r"(^mytags:\s*\n)(.*?)(?=^\w+:|\Z)"
+    match_existing_mytags_section = re.search(regex_for_mytags_section, file_str,re.MULTILINE | re.DOTALL)
+
+    header = match_existing_mytags_section.group(1)
+    content = match_existing_mytags_section.group(2)
+
+    str_of_mytag = f"  - \"[[{mytag}]]\"\n"
+
+    if content and not content.endswith('\n'):
+        content += '\n'
+
+    replacement_string = header + content + str_of_mytag
+    new_file_str = re.sub(regex_for_mytags_section, replacement_string,file_str,1,re.MULTILINE | re.DOTALL)
+
+    return new_file_str
+
+def add_mytag_if_not_exists(vault_path:Path, mytag:str, list_of_existing_mytags: list[str]) -> None:
+    proceed = False
+    count_notes_changed = 0
+
+    # walk from markdown files
+    for dirpath, dirnames, filenames in os.walk(vault_path):
+        for filename in [f for f in filenames if f.endswith(".md")]:
+            abs_file_path = f"{dirpath}/{filename}"
+            with open(abs_file_path, "r") as f:
+                file_str = f.read()
+            if mytags_exists(file_str, list_of_existing_mytags) and not mytag_exists(file_str, mytag):
+                final_file_str = add_mytag_to_file_str(file_str, mytag)
+
+                if not proceed:
+                    print(abs_file_path)
+                    var = input(
+                        f"This is how it looks if the template is added for \"{filename}\":\n" + final_file_str + "\n\nIs that okay (y/n/all): ").lower()
+
+                    if var == "n":
+                        print("Termination from user")
+                        return
+                    elif var == "all":
+                        proceed = True
+                    elif var != "y":
+                        # Wenn weder y noch all noch n, überspringen wir diese Datei
+                        continue
+
+                # Schreiben
+                with open(abs_file_path, "w") as file:
+                            file.write(final_file_str)
+                            count_notes_changed += 1
+                            if proceed:
+                                print(f"Tag hinzugefügt in: {filename}")
+                            else:
+                                print("Datei gespeichert.")
+
+    print(f"\nFertig. {count_notes_changed} Dateien wurden geändert.")
