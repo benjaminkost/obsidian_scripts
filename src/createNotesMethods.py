@@ -138,3 +138,7 @@ def create_notes_from_big_note(abs_path_to_vault: Path, relative_path_to_file: P
         elif current_path: # checks if there is at least one headline found in document
             with open(active_file_path, "a") as f:
                 f.write(f"{line}\n")
+
+    # adds template end to the last created atomic note
+    with open(active_file_path, "a") as f:
+        f.write(f"\n{template_end}")
