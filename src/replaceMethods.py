@@ -7,10 +7,10 @@ def replace_latex_delimiter(abs_path):
     with open(abs_path, "r") as f:
         note = f.read()
 
-    note = note.replace("\[", "$$")
-    note = note.replace("\]", "$$")
-    note = note.replace("\( ", "$")
-    note = note.replace(" \)", "$")
+    note = note.replace(r"\[", "$$")
+    note = note.replace(r"\]", "$$")
+    note = note.replace(r"\( ", "$")
+    note = note.replace(r" \)", "$")
 
     with open(abs_path, "w") as f:
             f.write(note)
@@ -20,7 +20,7 @@ def get_formatted_datetime():
     formatted = f"{now.strftime('%d.%m.%Y')} {now.strftime('%H:%M')}"
     return formatted
 
-def replace_strings(abs_path_folder, str_to_replace, str_replacement):
+def replace_strings_in_folders(abs_path_folder, str_to_replace, str_replacement):
     list_files_in_dir = []
 
     # Added all files in dir in list
@@ -44,6 +44,25 @@ def replace_strings(abs_path_folder, str_to_replace, str_replacement):
 
         file = open(path_for_file, "w")
         file.write(str_file)
+
+    print("\nAll files in Directory changed as requested!")
+
+def replace_strings_in_file(abs_path_to_file, str_to_replace, str_replacement):
+
+    file = open(abs_path_to_file, "r")
+    str_file = file.read()
+
+    str_file = str_file.replace(str_to_replace, str_replacement)
+
+
+    var = input("This is how it looks if the template is added:\n"+str_file+"\n\nIs that okay (y/n): ")
+
+    if var == "n":
+        print("\nNothing changed in vault")
+        exit()
+
+    file = open(abs_path_to_file, "w")
+    file.write(str_file)
 
     print("\nAll files in Directory changed as requested!")
 

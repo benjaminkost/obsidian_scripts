@@ -6,4 +6,4 @@ main.py
 tests/test_findAllReferences.py
 
 # specific files
-previous_executions.txt
+previous_executions.md
