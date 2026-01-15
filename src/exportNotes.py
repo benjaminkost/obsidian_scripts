@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 import os
 import re
@@ -9,7 +8,7 @@ from src.findAllReferences import check_str_in_mytags
 def export_notes_with_mytag(abs_path_to_vault, export_path, mytag:str):
 
     count_of_file = sum([len(files) for r, d, files in os.walk(abs_path_to_vault)])
-    logging.info(f"Count of files in vault: {count_of_file}")
+    print(f"Count of files in vault: {count_of_file}")
 
     # Make export directory and asset as subfolder
     Path(export_path).mkdir(parents=True, exist_ok=True)
@@ -29,18 +28,6 @@ def export_notes_with_mytag(abs_path_to_vault, export_path, mytag:str):
 
                 # Copy assets
                 export_obsidian_media(file_str, abs_path_to_vault, f"{export_path}/assets")
-
-                count_of_file = sum([len(files) for r, d, files in os.walk(abs_path_to_vault)])
-
-                # if proceed:
-                #    var = input(f"Count of files in vault: {count_of_file}\n\nIs that okay (y/n): ")
-
-                #     if var == "n":
-                #        print("\nNothing changed in vault")
-                #        exit()
-
-                #    proceed = True
-
 
 def export_obsidian_media(file_string: str, abs_vault_path: str, export_path: str):
     """

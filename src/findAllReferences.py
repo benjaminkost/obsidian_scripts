@@ -8,12 +8,15 @@ def check_str_in_mytags(str_file, mytag) -> bool:
 
     matches = pattern.findall(str_file)
 
-    for match in matches:
-        match = match.replace("[[", "").replace("]]", "").replace("\n", "").replace("\"", "").replace("-","").strip().split("   ")[0]
-        print(match)
-        if mytag == match:
-            print("Here")
-            return True
+    for block in matches:
+        lines = block.splitlines()
+
+        for line in lines:
+            # Bereinigung: Entferne [[, ]], ", -, und Leerzeichen
+            clean_line = line.replace("[[", "").replace("]]", "").replace('"', "").replace("-", "").strip()
+
+            if clean_line == mytag:
+                return True
 
     return False
 

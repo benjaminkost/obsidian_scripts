@@ -123,6 +123,6 @@ def replace_mytag_with_tag(abs_vault_path: str, mytag: str, tag_name=None) -> No
 
     print(f"Notes changed: {count_notes_changed}")
 
-def replace_list_of_mytags(abs_vault_path:str, list_of_mytags:list) -> None:
+def replace_list_of_mytags_to_tags(abs_vault_path:str, list_of_mytags:list) -> None:
     for mytag in list_of_mytags:
         replace_mytag_with_tag(abs_vault_path,mytag)
