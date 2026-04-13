@@ -15,6 +15,15 @@ def replace_latex_delimiter(abs_path):
     with open(abs_path, "w") as f:
             f.write(note)
 
+def replace_specific_sign(abs_path, sign_to_replace, sign_replacement):
+    with open(abs_path, "r") as f:
+        note = f.read()
+
+    note = note.replace(rf"{sign_to_replace}", sign_replacement)
+
+    with open(abs_path, "w") as f:
+            f.write(note)
+
 def get_formatted_datetime():
     now = datetime.now()
     formatted = f"{now.strftime('%d.%m.%Y')} {now.strftime('%H:%M')}"
