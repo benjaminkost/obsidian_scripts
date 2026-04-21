@@ -12,11 +12,49 @@ def check_str_in_mytags(str_file, mytag) -> bool:
         lines = block.splitlines()
 
         for line in lines:
-            # Bereinigung: Entferne [[, ]], ", -, und Leerzeichen
             clean_line = line.replace("[[", "").replace("]]", "").replace('"', "").replace("-", "").strip()
 
             if clean_line == mytag:
                 return True
+
+    return False
+
+def check_str_in_specific_metadata(str_file, metadata_name, metadata_value):
+    pattern = re.compile(rf"{metadata_name}:\s*([\s\S]*)\stags:")
+
+    matches = pattern.findall(str_file)
+
+    for block in matches:
+        lines = block.splitlines()
+
+        for line in lines:
+            clean_line = line.replace("[[", "").replace("]]", "").replace('"', "").replace("-", "").strip()
+
+            if clean_line == metadata_value:
+                return True
+
+    return False
+
+
+def check_str_in_metadata(str_file, metadata_value):
+    pattern = re.compile(r"^---[\s\S]+?^---", re.MULTILINE)
+
+    matches = pattern.findall(str_file)
+    if not matches:
+        return False
+
+    lines = matches[0].splitlines()
+
+    for line in lines:
+        clean_line = line.replace("[[", "").replace("]]", "").replace('"', "").strip().lstrip("- ")
+
+        if "|" in clean_line:
+            parts = clean_line.split("|")[0]
+            if metadata_value in parts:
+                return True
+
+        if clean_line == metadata_value:
+            return True
 
     return False
 

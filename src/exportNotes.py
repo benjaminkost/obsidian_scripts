@@ -3,9 +3,10 @@ import os
 import re
 import shutil
 
-from src.findAllReferences import check_str_in_mytags
+from src.findAllReferences import check_str_in_mytags, check_str_in_metadata
 
-def export_notes_with_mytag(abs_path_to_vault, export_path, mytag:str):
+
+def export_notes_with_mytag(abs_path_to_vault, export_path, linkName:str):
 
     count_of_file = sum([len(files) for r, d, files in os.walk(abs_path_to_vault)])
     print(f"Count of files in vault: {count_of_file}")
@@ -22,7 +23,7 @@ def export_notes_with_mytag(abs_path_to_vault, export_path, mytag:str):
             with open(path_to_file, "r") as f:
                 file_str = f.read()
                 f.close()
-            if check_str_in_mytags(file_str, mytag):
+            if check_str_in_metadata(file_str, linkName):
                 # Copy path
                 shutil.copyfile(path_to_file, f"{export_path}/{filename}")
 
