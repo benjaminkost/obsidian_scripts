@@ -2,7 +2,6 @@
 .venv/
 
 # own executions
-main.py
 tests/test_findAllReferences.py
 
 # specific files
