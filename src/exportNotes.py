@@ -3,7 +3,7 @@ import os
 import re
 import shutil
 
-from src.findAllReferences import check_str_in_mytags, check_str_in_metadata
+from src.findAllReferences import check_str_in_metadata
 
 
 def export_notes_with_mytag(abs_path_to_vault, export_path, linkName:str):
